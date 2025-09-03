@@ -1,4 +1,5 @@
 import { View } from 'react-native';
+import { theme } from '@/theme';
 import { Tabs } from 'expo-router';
 import { LayoutDashboard, FileText, Bell, User, Users } from 'lucide-react-native';
 
@@ -8,19 +9,19 @@ export default function FacultyTabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#5A1A32',
+          backgroundColor: theme.colors.primary,
           borderTopWidth: 0,
           paddingBottom: 12,
           paddingTop: 12,
           height: 85,
-          shadowColor: '#000',
+          shadowColor: theme.colors.shadow,
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.15,
           shadowRadius: 8,
           elevation: 8,
         },
-        tabBarActiveTintColor: '#ffffff',
-        tabBarInactiveTintColor: '#A8A8AA',
+        tabBarActiveTintColor: theme.colors.accent,
+        tabBarInactiveTintColor: theme.colors.textPrimary,
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '600',

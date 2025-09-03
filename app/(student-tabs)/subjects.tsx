@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput } from 'react-native';
+import { theme } from '@/theme';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BookOpen, Search, Filter, Star } from 'lucide-react-native';
+import { BookOpen, Search, Star } from 'lucide-react-native';
 import { sampleSubjects } from '@/data/sampleData';
 
 export default function SubjectsPage() {
@@ -21,7 +22,7 @@ export default function SubjectsPage() {
     >
       <View style={styles.cardHeader}>
         <View style={styles.subjectIcon}>
-          <BookOpen size={24} color="#ffffff" strokeWidth={2.5} />
+          <BookOpen size={24} color={theme.colors.primary} strokeWidth={2.5} />
         </View>
         <TouchableOpacity style={styles.favoriteButton}>
           <Star size={16} color="#A8A8AA" strokeWidth={2} />
@@ -44,14 +45,11 @@ export default function SubjectsPage() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Subjects</Text>
-        <TouchableOpacity style={styles.filterButton}>
-          <Filter size={20} color="#A8A8AA" strokeWidth={2.5} />
-        </TouchableOpacity>
       </View>
       
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
-          <Search size={20} color="#A8A8AA" strokeWidth={2} />
+          <Search size={20} color={theme.colors.primary} strokeWidth={2} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search subjects..."
@@ -82,37 +80,31 @@ export default function SubjectsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: theme.colors.background,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#5A1A32',
+    backgroundColor: theme.colors.accent,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    fontSize: 26,
+    fontWeight: '700',
+    color: theme.colors.primary,
+    textAlign: 'center',
   },
-  filterButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   searchContainer: {
     paddingHorizontal: 24,
     paddingTop: 20,
-    backgroundColor: '#5A1A32',
+    backgroundColor: theme.colors.accent,
     paddingBottom: 24,
   },
   searchBox: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(36, 70, 45, 0.15)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -123,7 +115,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#ffffff',
+    color: theme.colors.primary,
   },
   content: {
     flex: 1,
@@ -132,7 +124,7 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: theme.colors.accent,
     marginBottom: 16,
   },
   subjectsList: {
@@ -142,12 +134,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   subjectCard: {
-    backgroundColor: '#1A1A1A',
+    backgroundColor: theme.colors.surface,
     width: '47%',
     padding: 16,
     borderRadius: 20,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -162,7 +154,7 @@ const styles = StyleSheet.create({
   subjectIcon: {
     width: 40,
     height: 40,
-    backgroundColor: '#5A1A32',
+    backgroundColor: theme.colors.accent,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -173,13 +165,13 @@ const styles = StyleSheet.create({
   subjectName: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#ffffff',
+    color: theme.colors.textPrimary,
     marginBottom: 4,
     lineHeight: 18,
   },
   subjectCode: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: theme.colors.accent,
     marginBottom: 12,
   },
   cardFooter: {
@@ -188,19 +180,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   creditsBadge: {
-    backgroundColor: 'rgba(90, 26, 50, 0.3)',
+    backgroundColor: 'rgba(255, 199, 2, 0.2)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
   },
   creditsText: {
     fontSize: 10,
-    color: '#A8A8AA',
+    color: theme.colors.accent,
     fontWeight: '500',
   },
   progressText: {
     fontSize: 10,
-    color: '#10B981',
+    color: theme.colors.accent,
     fontWeight: '500',
   },
 });

@@ -2,14 +2,15 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Users, BookOpen, Upload, FileText, User, ChartBar as BarChart3, Calendar, TrendingUp, Award } from 'lucide-react-native';
+import { Bell, Users, BookOpen, FileText, User, ChartBar as BarChart3, Calendar, TrendingUp, Award } from 'lucide-react-native';
+import { theme } from '@/theme';
 
 export default function FacultyDashboardTab() {
   const stats = [
-    { label: 'Total Students', value: '156', icon: Users, color: '#3B82F6' },
-    { label: 'Active Subjects', value: '4', icon: BookOpen, color: '#10B981' },
-    { label: 'Assignments', value: '12', icon: FileText, color: '#F59E0B' },
-    { label: 'Submissions', value: '89%', icon: TrendingUp, color: '#8B5CF6' },
+    { label: 'Total Students', value: '156', icon: Users, color: theme.colors.accent },
+    { label: 'Active Subjects', value: '4', icon: BookOpen, color: theme.colors.accent },
+    { label: 'Assignments', value: '12', icon: FileText, color: theme.colors.accent },
+    { label: 'Submissions', value: '89%', icon: TrendingUp, color: theme.colors.accent },
   ];
 
   const quickActions = [
@@ -21,14 +22,7 @@ export default function FacultyDashboardTab() {
       color: '#3B82F6',
       route: '/faculty/manage-students',
     },
-    {
-      id: '2',
-      title: 'Course Content',
-      subtitle: 'Upload notes & videos',
-      icon: Upload,
-      color: '#10B981',
-      route: '/faculty/upload-content',
-    },
+    
     {
       id: '3',
       title: 'Assignments',
@@ -50,7 +44,7 @@ export default function FacultyDashboardTab() {
   const recentActivity = [
     { id: '1', action: 'New assignment submitted', student: 'John Doe', time: '2 hours ago' },
     { id: '2', action: 'Student enrolled', student: 'Jane Smith', time: '4 hours ago' },
-    { id: '3', action: 'Video uploaded', student: 'System', time: '1 day ago' },
+    { id: '3', action: 'Assignment graded', student: 'Jane Smith', time: '1 day ago' },
   ];
 
   const renderStatCard = (stat: any, index: number) => (
@@ -102,7 +96,7 @@ export default function FacultyDashboardTab() {
             style={styles.notificationButton}
             onPress={() => router.push('/(faculty-tabs)/notifications')}
           >
-            <Bell size={24} color="#ffffff" strokeWidth={2.5} />
+            <Bell size={24} color={theme.colors.primary} strokeWidth={2.5} />
             <View style={styles.notificationBadge}>
               <Text style={styles.badgeText}>5</Text>
             </View>
@@ -145,7 +139,7 @@ export default function FacultyDashboardTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#02462D',
   },
   scrollContainer: {
     flex: 1,
@@ -157,29 +151,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 32,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
   },
   welcomeSection: {
     flex: 1,
   },
   welcomeText: {
     fontSize: 16,
-    color: '#A8A8AA',
+    color: '#02462D',
     marginBottom: 4,
   },
   facultyName: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#02462D',
     marginBottom: 4,
   },
   departmentInfo: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: '#02462D',
   },
   notificationButton: {
     position: 'relative',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(36, 70, 45, 0.1)',
     width: 48,
     height: 48,
     borderRadius: 24,
@@ -198,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#5A1A32',
+    borderColor: '#FFC702',
   },
   badgeText: {
     color: '#ffffff',
@@ -212,7 +206,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#FFC702',
     marginBottom: 16,
   },
   statsGrid: {
@@ -253,7 +247,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontWeight: '500',
   },
   actionsContainer: {
@@ -291,7 +285,7 @@ const styles = StyleSheet.create({
   },
   actionSubtitle: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     lineHeight: 16,
   },
   activityContainer: {
@@ -310,7 +304,7 @@ const styles = StyleSheet.create({
   activityDot: {
     width: 8,
     height: 8,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
     borderRadius: 4,
     marginRight: 12,
   },
@@ -325,11 +319,11 @@ const styles = StyleSheet.create({
   },
   activityStudent: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     marginBottom: 2,
   },
   activityTime: {
     fontSize: 11,
-    color: '#64748b',
+    color: '#FFC702',
   },
 });

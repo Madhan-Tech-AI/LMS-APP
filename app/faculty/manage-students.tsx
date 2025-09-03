@@ -20,7 +20,7 @@ export default function ManageStudentsPage() {
   const renderStudentCard = ({ item }: { item: any }) => (
     <View style={styles.studentCard}>
       <View style={styles.studentIcon}>
-        <User size={24} color="#1E40AF" />
+        <User size={24} color="#02462D" />
       </View>
       
       <View style={styles.studentInfo}>
@@ -34,13 +34,13 @@ export default function ManageStudentsPage() {
           style={styles.actionButton}
           onPress={() => handleViewProfile(item.id)}
         >
-          <Eye size={16} color="#059669" />
+          <Eye size={16} color="#02462D" />
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.actionButton}
           onPress={() => handleSendNotification(item.name)}
         >
-          <Send size={16} color="#1E40AF" />
+          <Send size={16} color="#02462D" />
         </TouchableOpacity>
       </View>
     </View>
@@ -50,7 +50,7 @@ export default function ManageStudentsPage() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <ArrowLeft size={24} color="#1e293b" />
+          <ArrowLeft size={24} color="#02462D" />
         </TouchableOpacity>
         <Text style={styles.title}>Manage Students</Text>
         <View style={{ width: 24 }} />
@@ -75,22 +75,22 @@ export default function ManageStudentsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#02462D',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFC702',
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: '#02462D',
   },
   title: {
     flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1e293b',
+    color: '#02462D',
     textAlign: 'center',
   },
   content: {
@@ -101,19 +101,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1e293b',
+    color: '#FFC702',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#FFC702',
     marginBottom: 20,
   },
   studentsList: {
     paddingBottom: 20,
   },
   studentCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#1A1A1A',
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   studentIcon: {
     width: 48,
     height: 48,
-    backgroundColor: '#eff6ff',
+    backgroundColor: '#FFC702',
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
@@ -140,17 +140,17 @@ const styles = StyleSheet.create({
   studentName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#ffffff',
     marginBottom: 4,
   },
   studentReg: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#FFC702',
     marginBottom: 2,
   },
   studentSemester: {
     fontSize: 12,
-    color: '#059669',
+    color: '#FFC702',
     fontWeight: '500',
   },
   actionButtons: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   actionButton: {
     width: 36,
     height: 36,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#FFC702',
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',

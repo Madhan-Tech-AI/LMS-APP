@@ -1,6 +1,7 @@
 import { View } from 'react-native';
+import { theme } from '@/theme';
 import { Tabs } from 'expo-router';
-import { Chrome as Home, FileText, Bell, User, BookOpen } from 'lucide-react-native';
+import { Home, FileText, Award, User, BookOpen } from 'lucide-react-native';
 
 export default function StudentTabsLayout() {
   return (
@@ -8,19 +9,19 @@ export default function StudentTabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#5A1A32',
+          backgroundColor: theme.colors.primary,
           borderTopWidth: 0,
           paddingBottom: 12,
           paddingTop: 12,
           height: 85,
-          shadowColor: '#000',
+          shadowColor: theme.colors.shadow,
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.15,
           shadowRadius: 8,
           elevation: 8,
         },
-        tabBarActiveTintColor: '#ffffff',
-        tabBarInactiveTintColor: '#A8A8AA',
+        tabBarActiveTintColor: theme.colors.accent,
+        tabBarInactiveTintColor: theme.colors.textPrimary,
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '600',
@@ -34,7 +35,7 @@ export default function StudentTabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Dashboard',
+          title: 'Home',
           tabBarIcon: ({ size, color, focused }) => (
             <View style={{
               backgroundColor: focused ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
@@ -77,16 +78,16 @@ export default function StudentTabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="notifications"
+        name="ca-results"
         options={{
-          title: 'Updates',
+          title: 'Results',
           tabBarIcon: ({ size, color, focused }) => (
             <View style={{
               backgroundColor: focused ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
               borderRadius: 12,
               padding: 8,
             }}>
-              <Bell size={size} color={color} strokeWidth={focused ? 2.5 : 2} />
+              <Award size={size} color={color} strokeWidth={focused ? 2.5 : 2} />
             </View>
           ),
         }}

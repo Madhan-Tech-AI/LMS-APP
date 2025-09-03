@@ -1,32 +1,32 @@
 export const sampleSubjects = [
   {
     id: '1',
-    name: 'Data Structures and Algorithms',
-    code: 'CS301',
+    name: 'Discrete Mathematics',
+    code: 'MA3354',
     credits: 4,
   },
   {
     id: '2',
-    name: 'Database Management Systems',
-    code: 'CS302',
+    name: 'Digital Principles of Computing Organization',
+    code: 'CS3351',
     credits: 3,
   },
   {
     id: '3',
-    name: 'Operating Systems',
-    code: 'CS303',
+    name: 'Artificial Intelligence',
+    code: 'AL3391',
     credits: 4,
   },
   {
     id: '4',
-    name: 'Software Engineering',
-    code: 'CS304',
+    name: 'Database Design and Management',
+    code: 'AD3391',
     credits: 3,
   },
   {
     id: '5',
-    name: 'Computer Networks',
-    code: 'CS305',
+    name: 'Design and Analysis of Algorithms',
+    code: 'AD3351',
     credits: 3,
   },
 ];

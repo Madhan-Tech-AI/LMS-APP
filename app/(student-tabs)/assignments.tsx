@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, TextInput, Modal, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
-import { Upload, Calendar, Clock, Search, Filter, CircleCheck as CheckCircle, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { Upload, Calendar, Clock, Search, CircleCheck as CheckCircle, CircleAlert as AlertCircle, X, FileText, FileImage, File } from 'lucide-react-native';
 import { sampleSubjects, sampleAssignments } from '@/data/sampleData';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default function AssignmentsPage() {
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [selectedAssignment, setSelectedAssignment] = useState<any>(null);
+  const [studentDetails, setStudentDetails] = useState({
+    name: '',
+    registrationNo: '',
+    department: '',
+    semester: ''
+  });
+
   const filteredAssignments = sampleAssignments.filter(assignment => {
     const matchesSubject = selectedSubject === 'all' || assignment.subjectId === selectedSubject;
     const matchesSearch = assignment.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -17,23 +28,64 @@ export default function AssignmentsPage() {
     return matchesSubject && matchesSearch && matchesStatus;
   });
 
-  const handleUpload = (assignmentId: string) => {
-    Alert.alert(
-      'Upload Assignment',
-      'Choose file type to upload:',
-      [
-        { text: 'PDF Document', onPress: () => uploadFile('PDF', assignmentId) },
-        { text: 'Word Document', onPress: () => uploadFile('DOC', assignmentId) },
-        { text: 'PowerPoint', onPress: () => uploadFile('PPT', assignmentId) },
-        { text: 'Image/Photo', onPress: () => uploadFile('Image', assignmentId) },
-        { text: 'Cancel', style: 'cancel' },
-      ]
-    );
+  const handleUpload = (assignment: any) => {
+    setSelectedAssignment(assignment);
+    setShowUploadModal(true);
   };
 
-  const uploadFile = (fileType: string, assignmentId: string) => {
-    Alert.alert('Success', `${fileType} file uploaded successfully!`);
+  const pickDocument = async (fileType: string) => {
+    try {
+      let result;
+      if (fileType === 'PDF') {
+        result = await DocumentPicker.getDocumentAsync({
+          type: 'application/pdf',
+          copyToCacheDirectory: true,
+        });
+      } else if (fileType === 'DOC') {
+        result = await DocumentPicker.getDocumentAsync({
+          type: 'application/msword',
+          copyToCacheDirectory: true,
+        });
+      } else if (fileType === 'PPT') {
+        result = await DocumentPicker.getDocumentAsync({
+          type: 'application/vnd.ms-powerpoint',
+          copyToCacheDirectory: true,
+        });
+      }
+
+      if (result && !result.canceled && result.assets && result.assets[0]) {
+        setSelectedFile(result.assets[0]);
+        setShowUploadModal(false);
+        setShowFormModal(true);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick document');
+    }
   };
+
+  const handleSubmitAssignment = () => {
+    if (studentDetails.name && studentDetails.registrationNo && studentDetails.department && studentDetails.semester) {
+      Alert.alert(
+        'Success!',
+        `Assignment submitted successfully!\n\nFile: ${selectedFile?.name}\nStudent: ${studentDetails.name}\nRegistration: ${studentDetails.registrationNo}`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setShowFormModal(false);
+              setSelectedFile(null);
+              setSelectedAssignment(null);
+              setStudentDetails({ name: '', registrationNo: '', department: '', semester: '' });
+            }
+          }
+        ]
+      );
+    } else {
+      Alert.alert('Error', 'Please fill in all details');
+    }
+  };
+
+  const isFormComplete = studentDetails.name && studentDetails.registrationNo && studentDetails.department && studentDetails.semester;
 
   const renderAssignmentCard = ({ item }: { item: any }) => (
     <View style={styles.assignmentCard}>
@@ -76,9 +128,9 @@ export default function AssignmentsPage() {
       {item.status !== 'submitted' && (
         <TouchableOpacity 
           style={styles.uploadButton}
-          onPress={() => handleUpload(item.id)}
+          onPress={() => handleUpload(item)}
         >
-          <Upload size={16} color="#ffffff" strokeWidth={2.5} />
+          <Upload size={16} color="#02462D" strokeWidth={2.5} />
           <Text style={styles.uploadButtonText}>Submit Assignment</Text>
         </TouchableOpacity>
       )}
@@ -89,18 +141,15 @@ export default function AssignmentsPage() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Assignments</Text>
-        <TouchableOpacity style={styles.filterButton}>
-          <Filter size={20} color="#A8A8AA" strokeWidth={2.5} />
-        </TouchableOpacity>
       </View>
       
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
-          <Search size={20} color="#A8A8AA" strokeWidth={2} />
+          <Search size={20} color="#02462D" strokeWidth={2} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search assignments..."
-            placeholderTextColor="#A8A8AA"
+            placeholderTextColor="#02462D"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -114,11 +163,11 @@ export default function AssignmentsPage() {
               selectedValue={selectedSubject}
               onValueChange={(itemValue) => setSelectedSubject(itemValue)}
               style={styles.picker}
-              dropdownIconColor="#A8A8AA"
+              dropdownIconColor="#02462D"
             >
-              <Picker.Item label="All Subjects" value="all" color="#ffffff" />
+              <Picker.Item label="All Subjects" value="all" color="#02462D" />
               {sampleSubjects.map((subject) => (
-                <Picker.Item key={subject.id} label={subject.name} value={subject.id} color="#ffffff" />
+                <Picker.Item key={subject.id} label={subject.name} value={subject.id} color="#02462D" />
               ))}
             </Picker>
           </View>
@@ -127,11 +176,11 @@ export default function AssignmentsPage() {
               selectedValue={filterStatus}
               onValueChange={(itemValue) => setFilterStatus(itemValue)}
               style={styles.picker}
-              dropdownIconColor="#A8A8AA"
+              dropdownIconColor="#02462D"
             >
-              <Picker.Item label="All Status" value="all" color="#ffffff" />
-              <Picker.Item label="Pending" value="pending" color="#ffffff" />
-              <Picker.Item label="Submitted" value="submitted" color="#ffffff" />
+              <Picker.Item label="All Status" value="all" color="#02462D" />
+              <Picker.Item label="Pending" value="pending" color="#02462D" />
+              <Picker.Item label="Submitted" value="submitted" color="#02462D" />
             </Picker>
           </View>
         </View>
@@ -148,6 +197,125 @@ export default function AssignmentsPage() {
           showsVerticalScrollIndicator={false}
         />
       </View>
+
+      {/* File Type Selection Modal */}
+      <Modal
+        visible={showUploadModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowUploadModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Choose File Type</Text>
+              <TouchableOpacity onPress={() => setShowUploadModal(false)}>
+                <X size={24} color="#02462D" />
+              </TouchableOpacity>
+            </View>
+            
+            <Text style={styles.modalSubtitle}>Select the type of file you want to upload:</Text>
+            
+            <View style={styles.fileTypeOptions}>
+              <TouchableOpacity 
+                style={styles.fileTypeOption}
+                onPress={() => pickDocument('PDF')}
+              >
+                <FileText size={32} color="#EF4444" />
+                <Text style={styles.fileTypeText}>PDF Document</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.fileTypeOption}
+                onPress={() => pickDocument('DOC')}
+              >
+                <File size={32} color="#3B82F6" />
+                <Text style={styles.fileTypeText}>Word Document</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.fileTypeOption}
+                onPress={() => pickDocument('PPT')}
+              >
+                <FileImage size={32} color="#8B5CF6" />
+                <Text style={styles.fileTypeText}>PowerPoint</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Student Details Form Modal */}
+      <Modal
+        visible={showFormModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowFormModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Student Details</Text>
+              <TouchableOpacity onPress={() => setShowFormModal(false)}>
+                <X size={24} color="#02462D" />
+              </TouchableOpacity>
+            </View>
+            
+            <Text style={styles.modalSubtitle}>File: {selectedFile?.name}</Text>
+            
+            <ScrollView style={styles.formContainer}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Student Name *</Text>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Enter your full name"
+                  value={studentDetails.name}
+                  onChangeText={(text) => setStudentDetails({...studentDetails, name: text})}
+                />
+              </View>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Registration Number *</Text>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Enter registration number"
+                  value={studentDetails.registrationNo}
+                  onChangeText={(text) => setStudentDetails({...studentDetails, registrationNo: text})}
+                />
+              </View>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Department *</Text>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Enter your department"
+                  value={studentDetails.department}
+                  onChangeText={(text) => setStudentDetails({...studentDetails, department: text})}
+                />
+              </View>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Semester *</Text>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Enter current semester"
+                  value={studentDetails.semester}
+                  onChangeText={(text) => setStudentDetails({...studentDetails, semester: text})}
+                />
+              </View>
+            </ScrollView>
+            
+            {isFormComplete && (
+              <TouchableOpacity 
+                style={styles.submitButton}
+                onPress={handleSubmitAssignment}
+              >
+                <Text style={styles.submitButtonText}>Submit Assignment</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -155,7 +323,7 @@ export default function AssignmentsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#02462D',
   },
   header: {
     flexDirection: 'row',
@@ -163,28 +331,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
+    minHeight: 80,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#02462D',
+    flex: 1,
   },
-  filterButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   searchContainer: {
     paddingHorizontal: 24,
     paddingTop: 20,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
   },
   searchBox: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(36, 70, 45, 0.1)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -195,26 +358,30 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#ffffff',
+    color: '#02462D',
   },
   filtersContainer: {
     paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingTop: 20,
     paddingBottom: 24,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 16,
   },
   pickerWrapper: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(36, 70, 45, 0.1)',
     borderRadius: 12,
+    overflow: 'hidden',
+    paddingVertical: 4,
   },
   picker: {
-    height: 45,
-    color: '#ffffff',
+    height: 56,
+    color: '#02462D',
+    fontSize: 14,
+    paddingVertical: 8,
   },
   content: {
     flex: 1,
@@ -223,7 +390,7 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: '#FFC702',
     marginBottom: 16,
   },
   assignmentsList: {
@@ -287,7 +454,7 @@ const styles = StyleSheet.create({
   },
   assignmentDescription: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: '#FFC702',
     lineHeight: 20,
     marginBottom: 16,
   },
@@ -303,26 +470,142 @@ const styles = StyleSheet.create({
   },
   metaText: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontWeight: '500',
   },
   uploadButton: {
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,
     borderRadius: 12,
     gap: 8,
-    shadowColor: '#5A1A32',
+    shadowColor: '#FFC702',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
   uploadButtonText: {
-    color: '#ffffff',
+    color: '#02462D',
     fontSize: 14,
     fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#1A1A1A',
+    borderRadius: 20,
+    padding: 30,
+    width: '90%',
+    maxHeight: '85%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFC702',
+    flex: 1,
+    textAlign: 'center',
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    color: '#FFC702',
+    textAlign: 'center',
+    marginBottom: 30,
+    opacity: 0.8,
+    paddingHorizontal: 20,
+  },
+  fileTypeOptions: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
+    gap: 20,
+  },
+  fileTypeOption: {
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 199, 2, 0.1)',
+    borderWidth: 2,
+    borderColor: '#FFC702',
+    minWidth: 200,
+    shadowColor: '#FFC702',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  fileTypeText: {
+    fontSize: 14,
+    color: '#FFC702',
+    marginTop: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  formContainer: {
+    width: '100%',
+    maxHeight: 300,
+  },
+  inputGroup: {
+    marginBottom: 20,
+    width: '100%',
+  },
+  inputLabel: {
+    fontSize: 16,
+    color: '#FFC702',
+    marginBottom: 8,
+    fontWeight: '600',
+  },
+  textInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    fontSize: 16,
+    color: '#FFC702',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 199, 2, 0.3)',
+    width: '100%',
+  },
+  submitButton: {
+    backgroundColor: '#FFC702',
+    paddingVertical: 16,
+    paddingHorizontal: 30,
+    borderRadius: 12,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    shadowColor: '#FFC702',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  submitButtonText: {
+    color: '#02462D',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

@@ -32,7 +32,7 @@ export default function FacultyLoginPage() {
       <View style={styles.content}>
         <View style={styles.headerSection}>
           <View style={styles.iconContainer}>
-            <Users size={48} color="#0F0F0F" strokeWidth={2.5} />
+            <Users size={48} color="#02462D" strokeWidth={2.5} />
           </View>
           <Text style={styles.title}>Faculty Portal</Text>
           <Text style={styles.subtitle}>Manage courses, students and academic content</Text>
@@ -42,7 +42,7 @@ export default function FacultyLoginPage() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Staff ID</Text>
             <View style={styles.inputContainer}>
-              <User size={20} color="#A8A8AA" strokeWidth={2} />
+                              <User size={20} color="#FFC702" strokeWidth={2} />
               <TextInput
                 style={styles.input}
                 value={staffId}
@@ -56,7 +56,7 @@ export default function FacultyLoginPage() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email Address</Text>
             <View style={styles.inputContainer}>
-              <Mail size={20} color="#A8A8AA" strokeWidth={2} />
+                              <Mail size={20} color="#FFC702" strokeWidth={2} />
               <TextInput
                 style={styles.input}
                 value={email}
@@ -72,7 +72,7 @@ export default function FacultyLoginPage() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password</Text>
             <View style={styles.inputContainer}>
-              <Lock size={20} color="#A8A8AA" strokeWidth={2} />
+                              <Lock size={20} color="#FFC702" strokeWidth={2} />
               <TextInput
                 style={styles.input}
                 value={password}
@@ -106,7 +106,7 @@ export default function FacultyLoginPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#02462D',
   },
   content: {
     flex: 1,
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
   iconContainer: {
     width: 80,
     height: 80,
-    backgroundColor: '#A8A8AA',
+    backgroundColor: '#FFC702',
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
-    shadowColor: '#A8A8AA',
+    shadowColor: '#FFC702',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 16,
@@ -134,13 +134,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#FFC702',
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#A8A8AA',
+    color: '#ffffff',
     textAlign: 'center',
     lineHeight: 24,
     paddingHorizontal: 20,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#ffffff',
+    color: '#FFC702',
     marginBottom: 8,
   },
   inputContainer: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#0F0F0F',
     borderWidth: 1,
-    borderColor: '#333333',
+    borderColor: '#FFC702',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 4,
@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   loginButton: {
-    backgroundColor: '#A8A8AA',
+    backgroundColor: '#FFC702',
     padding: 18,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#A8A8AA',
+    shadowColor: '#FFC702',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -199,18 +199,18 @@ const styles = StyleSheet.create({
   signupButton: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: '#A8A8AA',
+    borderColor: '#FFC702',
     padding: 18,
     borderRadius: 12,
     alignItems: 'center',
   },
   buttonText: {
-    color: '#0F0F0F',
+    color: '#02462D',
     fontSize: 18,
     fontWeight: '600',
   },
   signupButtonText: {
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontSize: 18,
     fontWeight: '600',
   },
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   forgotPasswordText: {
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontSize: 14,
     fontWeight: '500',
   },

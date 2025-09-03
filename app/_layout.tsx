@@ -18,7 +18,7 @@ export default function RootLayout() {
         <Stack.Screen name="subject/[id]" />
         <Stack.Screen name="faculty/manage-students" />
         <Stack.Screen name="faculty/manage-subjects" />
-        <Stack.Screen name="faculty/upload-content" />
+        
         <Stack.Screen name="faculty/student-detail/[id]" />
         <Stack.Screen name="+not-found" />
       </Stack>

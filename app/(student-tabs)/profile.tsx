@@ -48,7 +48,7 @@ export default function ProfilePage() {
       <View style={styles.header}>
         <Text style={styles.title}>Profile</Text>
         <TouchableOpacity onPress={handleEditProfile} style={styles.editButton}>
-          <Edit3 size={20} color="#ffffff" strokeWidth={2.5} />
+          <Edit3 size={20} color="#02462D" strokeWidth={2.5} />
         </TouchableOpacity>
       </View>
       
@@ -56,10 +56,10 @@ export default function ProfilePage() {
         <View style={styles.profileSection}>
           <View style={styles.profilePictureContainer}>
             <View style={styles.profilePicture}>
-              <User size={48} color="#ffffff" strokeWidth={2.5} />
+              <User size={48} color="#02462D" strokeWidth={2.5} />
             </View>
             <TouchableOpacity style={styles.cameraButton} onPress={handleChangePicture}>
-              <Camera size={16} color="#ffffff" strokeWidth={2.5} />
+              <Camera size={16} color="#FFC702" strokeWidth={2.5} />
             </TouchableOpacity>
           </View>
           
@@ -119,7 +119,7 @@ export default function ProfilePage() {
         <View style={styles.infoSection}>
           <View style={styles.infoCard}>
             <View style={styles.infoHeader}>
-              <Mail size={20} color="#5A1A32" strokeWidth={2.5} />
+              <Mail size={20} color="#FFC702" strokeWidth={2.5} />
               <Text style={styles.infoLabel}>Email</Text>
             </View>
             <Text style={styles.infoValue}>john.doe@student.gojan.ac.in</Text>
@@ -127,7 +127,7 @@ export default function ProfilePage() {
           
           <View style={styles.infoCard}>
             <View style={styles.infoHeader}>
-              <GraduationCap size={20} color="#5A1A32" strokeWidth={2.5} />
+              <GraduationCap size={20} color="#FFC702" strokeWidth={2.5} />
               <Text style={styles.infoLabel}>Current Semester</Text>
             </View>
             <Text style={styles.infoValue}>Semester 5</Text>
@@ -146,7 +146,7 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#02462D',
   },
   header: {
     flexDirection: 'row',
@@ -154,15 +154,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#02462D',
   },
   editButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: 'rgba(36, 70, 45, 0.15)',
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
   profilePicture: {
     width: 100,
     height: 100,
-    backgroundColor: '#5A1A32',
+    backgroundColor: '#FFC702',
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#5A1A32',
+    shadowColor: '#FFC702',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 16,
@@ -200,27 +200,27 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: 36,
     height: 36,
-    backgroundColor: '#A8A8AA',
+    backgroundColor: '#02462D',
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderColor: '#0F0F0F',
+    borderColor: '#02462D',
   },
   studentName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#FFC702',
     marginBottom: 4,
   },
   studentId: {
     fontSize: 16,
-    color: '#A8A8AA',
+    color: '#FFC702',
     marginBottom: 4,
   },
   studentProgram: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: '#FFC702',
   },
   statsSection: {
     marginBottom: 32,
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#FFC702',
     marginBottom: 16,
   },
   statsGrid: {
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontWeight: '500',
   },
   achievementsSection: {
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   achievementDescription: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
   },
   quickActionsSection: {
     marginBottom: 32,
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
   quickActionText: {
     fontSize: 12,
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontWeight: '500',
     textAlign: 'center',
   },
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 14,
-    color: '#A8A8AA',
+    color: '#FFC702',
     fontWeight: '500',
   },
   infoValue: {
