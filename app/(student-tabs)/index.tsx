@@ -234,12 +234,10 @@ export default function StudentHomePage() {
         </View>
         
         <View style={styles.notificationContent}>
-          <View style={styles.notificationHeader}>
-            <Text style={styles.notificationTitle}>{item.title}</Text>
-            <View style={styles.typeBadge}>
-              <Text style={styles.typeText}>{item.type}</Text>
-            </View>
+          <View style={styles.notificationTypeBadge}>
+            <Text style={styles.typeText}>{item.type}</Text>
           </View>
+          <Text style={styles.notificationTitle}>{item.title}</Text>
           <Text style={styles.notificationMessage}>{item.message}</Text>
           <View style={styles.notificationFooter}>
             <View style={styles.timeContainer}>
@@ -942,6 +940,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: theme.colors.accent,
     fontWeight: '500',
+  },
+  notificationTypeBadge: {
+    backgroundColor: 'rgba(255, 199, 2, 0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginBottom: 6,
   },
   notificationMessage: {
     fontSize: 14,
