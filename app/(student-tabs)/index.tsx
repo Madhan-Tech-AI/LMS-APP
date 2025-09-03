@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bell, BookOpen, Clock, TrendingUp, Calendar, Award, Target, FileText, Award as Trophy, X, CalendarDays, AlertCircle, GraduationCap, Filter } from 'lucide-react-native';
 import { sampleSubjects, sampleAssignments, sampleNotifications } from '@/data/sampleData';
+import { sampleStudents } from '@/data/facultyData';
 
 export default function StudentHomePage() {
   const [showCAResultModal, setShowCAResultModal] = useState(false);
@@ -122,12 +123,21 @@ export default function StudentHomePage() {
     { label: 'Pending', value: '3', icon: Target, color: theme.colors.accent },
   ];
 
+  const normalizeRegNo = (value: string) => value.replace(/\s+/g, '');
+  const isValidDobFormat = (value: string) => /^\d{4}-\d{2}-\d{2}$/.test(value);
   const handleCAResultSubmit = () => {
-    if (studentDetails.registrationNo && studentDetails.dateOfBirth) {
-      setShowCAResultModal(false);
-      setStudentDetails({ registrationNo: '', dateOfBirth: '' });
-      router.push('/(student-tabs)/ca-results');
-    }
+    const reg = normalizeRegNo(studentDetails.registrationNo);
+    const dob = studentDetails.dateOfBirth;
+    if (!reg || !dob) return;
+    if (!/^\d+$/.test(reg)) return;
+    if (!isValidDobFormat(dob)) return;
+
+    const match = sampleStudents.find(s => normalizeRegNo(s.regNo) === reg && s.dob === dob);
+    if (!match) return;
+
+    setShowCAResultModal(false);
+    setStudentDetails({ registrationNo: '', dateOfBirth: '' });
+    router.push({ pathname: '/(student-tabs)/ca-results', params: { regNo: reg, dob } });
   };
 
   const handleFilterSelect = (filterType: string) => {
@@ -503,7 +513,8 @@ export default function StudentHomePage() {
                 <Text style={styles.inputLabel}>Registration Number *</Text>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Enter registration number"
+                  placeholder="Enter 12-digit registration number"
+                  keyboardType="numeric"
                   value={studentDetails.registrationNo}
                   onChangeText={(text) => setStudentDetails({...studentDetails, registrationNo: text})}
                 />
@@ -513,9 +524,10 @@ export default function StudentHomePage() {
                 <Text style={styles.inputLabel}>Date of Birth *</Text>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="DD/MM/YYYY"
+                  placeholder="YYYY-MM-DD"
                   value={studentDetails.dateOfBirth}
                   onChangeText={(text) => setStudentDetails({...studentDetails, dateOfBirth: text})}
+                  maxLength={10}
                 />
               </View>
             </View>

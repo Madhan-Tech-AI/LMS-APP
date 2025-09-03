@@ -33,7 +33,8 @@ export const sampleStudents = [
   {
     id: '1',
     name: 'John Doe',
-    regNo: 'REG12345678',
+    regNo: '110523243011',
+    dob: '2003-05-12',
     semester: 5,
     email: 'john.doe@student.gojan.ac.in',
     cgpa: 8.7,
@@ -42,7 +43,8 @@ export const sampleStudents = [
   {
     id: '2',
     name: 'Jane Smith',
-    regNo: 'REG12345679',
+    regNo: '110523243012',
+    dob: '2003-08-21',
     semester: 5,
     email: 'jane.smith@student.gojan.ac.in',
     cgpa: 9.1,
@@ -51,7 +53,8 @@ export const sampleStudents = [
   {
     id: '3',
     name: 'Mike Johnson',
-    regNo: 'REG12345680',
+    regNo: '110523243013',
+    dob: '2002-11-03',
     semester: 6,
     email: 'mike.johnson@student.gojan.ac.in',
     cgpa: 8.3,
@@ -60,7 +63,8 @@ export const sampleStudents = [
   {
     id: '4',
     name: 'Sarah Wilson',
-    regNo: 'REG12345681',
+    regNo: '110523243014',
+    dob: '2002-02-14',
     semester: 6,
     email: 'sarah.wilson@student.gojan.ac.in',
     cgpa: 9.4,

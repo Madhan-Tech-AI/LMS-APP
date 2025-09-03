@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
 import { theme } from '@/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Award, Calendar, Clock, Search, Filter, CircleCheck as CheckCircle, BookOpen, TrendingUp, X } from 'lucide-react-native';
+import { sampleStudents } from '@/data/facultyData';
+import { useLocalSearchParams } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CAResultsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterSemester, setFilterSemester] = useState('all');
+  const [regNo, setRegNo] = useState('');
+  const [dob, setDob] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState<any | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [ignoreParams, setIgnoreParams] = useState(false);
+
+  const params = useLocalSearchParams();
+  const regParam = typeof params.regNo === 'string' ? params.regNo : undefined;
+  const dobParam = typeof params.dob === 'string' ? params.dob : undefined;
 
   // Sample CA Results data
   const sampleCAResults = [
@@ -64,7 +76,8 @@ export default function CAResultsPage() {
     const matchesSearch = result.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          result.subjectCode.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSemester = filterSemester === 'all' || result.semester === filterSemester;
-    return matchesSearch && matchesSemester;
+    const matchesStudentSemester = selectedStudent ? result.semester === `${selectedStudent.semester}th` : true;
+    return matchesSearch && matchesSemester && matchesStudentSemester;
   });
 
   const getGradeColor = (grade: string) => {
@@ -119,15 +132,139 @@ export default function CAResultsPage() {
     </View>
   );
 
+  const normalizeRegNo = (value: string) => value.replace(/\s+/g, '');
+
+  const isValidDobFormat = (value: string) => /^\d{4}-\d{2}-\d{2}$/.test(value);
+
+  const handleVerify = (reg: string, birth: string) => {
+    const cleanedReg = normalizeRegNo(reg);
+    if (!cleanedReg || !birth) {
+      setErrorMessage('Please enter both Registration No. and Date of Birth');
+      return;
+    }
+    if (!/^\d+$/.test(cleanedReg)) {
+      setErrorMessage('Registration No. must contain digits only');
+      return;
+    }
+    if (!isValidDobFormat(birth)) {
+      setErrorMessage('DOB must be in YYYY-MM-DD format');
+      return;
+    }
+    const matchingStudent = sampleStudents.find(
+      (s) => normalizeRegNo(s.regNo) === cleanedReg && s.dob === birth
+    );
+    if (matchingStudent) {
+      setSelectedStudent(matchingStudent);
+      setErrorMessage('');
+    } else {
+      setErrorMessage('Invalid Registration Number or DOB');
+    }
+  };
+
+  const handleSubmit = () => {
+    handleVerify(regNo, dob);
+  };
+
+  useEffect(() => {
+    if (!ignoreParams && regParam && dobParam && !selectedStudent) {
+      setRegNo(regParam);
+      setDob(dobParam);
+      handleVerify(regParam, dobParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [regParam, dobParam, ignoreParams]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const hasParams = !!(regParam && dobParam);
+      if (!hasParams) {
+        setSelectedStudent(null);
+        setRegNo('');
+        setDob('');
+        setErrorMessage('');
+        setIgnoreParams(false);
+      }
+    }, [regParam, dobParam])
+  );
+
+  const handleReset = () => {
+    setSelectedStudent(null);
+    setRegNo('');
+    setDob('');
+    setSearchQuery('');
+    setErrorMessage('');
+    setIgnoreParams(true);
+  };
+
+  if (!selectedStudent) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>CA Results</Text>
+          <TouchableOpacity style={styles.filterButton}>
+            <Filter size={20} color={theme.colors.primary} strokeWidth={2.5} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.formContainer}>
+          <View style={styles.formCard}>
+            <Text style={styles.formTitle}>Verify your details</Text>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Registration Number</Text>
+              <TextInput
+                style={styles.inputField}
+                placeholder="e.g., REG12345678"
+                placeholderTextColor="#A8A8AA"
+                autoCapitalize="characters"
+                value={regNo}
+                onChangeText={(t) => {
+                  setRegNo(t);
+                  if (errorMessage) setErrorMessage('');
+                }}
+                returnKeyType="next"
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Date of Birth</Text>
+              <TextInput
+                style={styles.inputField}
+                placeholder="YYYY-MM-DD"
+                placeholderTextColor="#A8A8AA"
+                keyboardType="numeric"
+                maxLength={10}
+                value={dob}
+                onChangeText={(t) => {
+                  setDob(t);
+                  if (errorMessage) setErrorMessage('');
+                }}
+                onSubmitEditing={handleSubmit}
+              />
+            </View>
+
+            {errorMessage ? (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            ) : null}
+
+            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+              <Text style={styles.submitButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>CA Results</Text>
-        <TouchableOpacity style={styles.filterButton}>
-          <Filter size={20} color={theme.colors.primary} strokeWidth={2.5} />
+        <TouchableOpacity style={styles.filterButton} onPress={handleReset}>
+          <X size={20} color={theme.colors.primary} strokeWidth={2.5} />
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
           <Search size={20} color={theme.colors.primary} strokeWidth={2} />
@@ -139,11 +276,14 @@ export default function CAResultsPage() {
             onChangeText={setSearchQuery}
           />
         </View>
+        <Text style={styles.studentInfoText}>
+          Student: {selectedStudent.name} ({selectedStudent.regNo}) • Semester {selectedStudent.semester}
+        </Text>
       </View>
-      
+
       <View style={styles.content}>
         <Text style={styles.resultsText}>{filteredResults.length} results found</Text>
-        
+
         <FlatList
           data={filteredResults}
           renderItem={renderResultCard}
@@ -188,6 +328,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.accent,
     paddingBottom: 24,
   },
+  studentInfoText: {
+    marginTop: 10,
+    fontSize: 12,
+    color: theme.colors.primary,
+    opacity: 0.8,
+  },
   searchBox: {
     backgroundColor: 'rgba(36, 70, 45, 0.15)',
     flexDirection: 'row',
@@ -201,6 +347,62 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: theme.colors.primary,
+  },
+  formContainer: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+  },
+  formCard: {
+    backgroundColor: theme.colors.surface,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  formTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: theme.colors.textPrimary,
+    marginBottom: 16,
+  },
+  inputGroup: {
+    marginBottom: 12,
+  },
+  inputLabel: {
+    fontSize: 12,
+    color: theme.colors.accent,
+    marginBottom: 6,
+  },
+  inputField: {
+    backgroundColor: 'rgba(36, 70, 45, 0.08)',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    color: theme.colors.primary,
+    fontSize: 16,
+  },
+  errorText: {
+    color: '#EF4444',
+    marginTop: 4,
+    marginBottom: 8,
+    fontSize: 12,
+  },
+  submitButton: {
+    marginTop: 8,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButtonText: {
+    color: theme.colors.accent,
+    fontSize: 16,
+    fontWeight: '700',
   },
   content: {
     flex: 1,
