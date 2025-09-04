@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { testConnection } from '../lib/testConnection';
 
 export default function LandingPage() {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    
+    testConnection();
     setShowContent(true);
     const timer = setTimeout(() => {
       router.push('/role-selection');

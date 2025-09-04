@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
@@ -31,6 +31,9 @@ export default function StudentLoginPage() {
   if (showSemesterQuestions) {
     return (
       <SafeAreaView style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <View style={styles.content}>
           <View style={styles.headerSection}>
             <View style={styles.iconContainer}>
@@ -50,9 +53,10 @@ export default function StudentLoginPage() {
                   onValueChange={(itemValue) => setSemester(itemValue)}
                   style={styles.picker}
                   dropdownIconColor="#A8A8AA"
+                  mode="dialog"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                    <Picker.Item key={sem} label={`Semester ${sem}`} value={sem.toString()} color="#ffffff" />
+                    <Picker.Item key={sem} label={`Semester ${sem}`} value={sem.toString()} />
                   ))}
                 </Picker>
               </View>
@@ -77,12 +81,18 @@ export default function StudentLoginPage() {
             </TouchableOpacity>
           </View>
         </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <View style={styles.content}>
         <View style={styles.headerSection}>
                       <View style={styles.iconContainer}>
@@ -133,6 +143,9 @@ export default function StudentLoginPage() {
           </TouchableOpacity>
         </View>
       </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }

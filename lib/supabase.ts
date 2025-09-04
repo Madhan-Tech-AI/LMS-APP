@@ -1,27 +1,8 @@
-import 'react-native-url-polyfill/auto';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL as string;
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY as string;
+// Direct values (⚠️ Not recommended for production, okay for prototype)
+const supabaseUrl = "https://ilirjqanlvpejzakjxol.supabase.co"
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsaXJqcWFubHZwZWp6YWtqeG9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4NzIyNTEsImV4cCI6MjA3MjQ0ODI1MX0.jUG369Bk_g2GeuxSXK3i4Kz8OVprUeS1GbrXlZ6oJTI"
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  // eslint-disable-next-line no-console
-  console.warn('Missing Supabase environment variables. Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY');
-}
-
-export const supabase = createClient(supabaseUrl ?? '', supabaseAnonKey ?? '');
-
-export const getPublicUrl = (bucket: string, path: string): string | null => {
-  try {
-    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-    return data?.publicUrl ?? null;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error generating public URL', error);
-    return null;
-  }
-};
-
-export const getPublicAssetUrl = (path: string): string | null => getPublicUrl('public-files', path);
-
-
+// Create Supabase client
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
